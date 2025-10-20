@@ -1,7 +1,0 @@
-file_format: "1"
-id: biba_macro24
-name: BIBA Macro 24
-type: shield
-requires: [nice_nano_v2]
-features: [keys]
-outputs: [usb]
