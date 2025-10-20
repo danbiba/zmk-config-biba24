@@ -1,0 +1,7 @@
+file_format: "1"
+id: biba_macro24_left
+name: BIBA Macro 24 (Left PCB)
+type: shield
+requires: [nice_nano_v2]
+features: [keys]
+outputs: [usb]
