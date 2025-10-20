@@ -1,37 +1,30 @@
 /dts-v1/;
-/ {
-    compatible = "zmk,keyboard";
-};
+#include "../_biba40_common.dtsi"
 
-/* LEFT PCB pins — replace with your actual Biba40 left-half pins */
-&kscan0 {
-    compatible = "zmk,kscan-gpio-matrix";
-    label = "BIBA_LEFT_KSCAN";
-
-    /* Example: old matrix 4 rows × 6 cols */
-    row-gpios = <&gpio0 20 GPIO_ACTIVE_HIGH>,
-                <&gpio0 21 GPIO_ACTIVE_HIGH>,
-                <&gpio0 22 GPIO_ACTIVE_HIGH>,
-                <&gpio0 23 GPIO_ACTIVE_HIGH>;
-
-    col-gpios = <&gpio1 8 GPIO_ACTIVE_HIGH>,
-                <&gpio1 9 GPIO_ACTIVE_HIGH>,
-                <&gpio1 10 GPIO_ACTIVE_HIGH>,
-                <&gpio1 11 GPIO_ACTIVE_HIGH>,
-                <&gpio1 12 GPIO_ACTIVE_HIGH>,
-                <&gpio1 13 GPIO_ACTIVE_HIGH>;
-
-    diode-direction = "col-to-row";
-};
-
-/* Rotate 90° counter-clockwise: new(r,c) -> old(c, 5 - r) for old 4×6 */
 &{/} {
-    kscan_transform: kscan_transform {
+    compatible = "zmk,keyboard";
+}
+
+/* LEFT PCB — your provided col order */
+&kscan0 {
+    col-gpios = <&pro_micro 14 GPIO_ACTIVE_HIGH>,
+                <&pro_micro 15 GPIO_ACTIVE_HIGH>,
+                <&pro_micro 18 GPIO_ACTIVE_HIGH>,
+                <&pro_micro 19 GPIO_ACTIVE_HIGH>,
+                <&pro_micro 20 GPIO_ACTIVE_HIGH>,
+                <&pro_micro 21 GPIO_ACTIVE_HIGH>;
+}
+
+/* Rotate 90° CCW from original 4×6 to a logical 6×4 */
+&{/} {
+    kscan_transform_left: kscan_transform_left {
         compatible = "zmk,kscan-transform";
         label = "BIBA_MACRO_KSCAN_TRANSFORM_LEFT";
         input = <&kscan0>;
         rows = <6>;
         columns = <4>;
+
+        /* new(r,c) -> old(c, 5 - r) for old 4×6 */
         transform = <ZMK_MATRIX_TRANSFORM(
             KSCAN_MATRIX_KEY(0,5), KSCAN_MATRIX_KEY(1,5), KSCAN_MATRIX_KEY(2,5), KSCAN_MATRIX_KEY(3,5),
             KSCAN_MATRIX_KEY(0,4), KSCAN_MATRIX_KEY(1,4), KSCAN_MATRIX_KEY(2,4), KSCAN_MATRIX_KEY(3,4),
@@ -43,4 +36,4 @@
     };
 };
 
-&chosen { zmk,kscan = &kscan_transform; };
+&chosen { zmk,kscan = &kscan_transform_left; };
