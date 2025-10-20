@@ -20,4 +20,8 @@
 ---
 include:
   - board: nice_nano_v2
-    shield: biba_macro24
+    shield: biba_macro24_left
+    artifact-name: biba_macro24_left
+  - board: nice_nano_v2
+    shield: biba_macro24_right
+    artifact-name: biba_macro24_right
