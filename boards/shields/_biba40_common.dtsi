@@ -1,0 +1,14 @@
+/* Shared rows + diode direction taken from biba40.dtsi */
+
+&kscan0 {
+    compatible = "zmk,kscan-gpio-matrix";
+    wakeup-source;
+    /* Keep the exact diode direction string from BIBA40 */
+    diode-direction = "col2row";
+
+    /* Exact rows with pull-downs, as in your BIBA40 */
+    row-gpios = <&pro_micro 2 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
+                <&pro_micro 3 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
+                <&pro_micro 4 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>,
+                <&pro_micro 5 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>;
+};
