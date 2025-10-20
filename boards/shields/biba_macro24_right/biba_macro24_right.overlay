@@ -1,37 +1,30 @@
 /dts-v1/;
-/ {
-    compatible = "zmk,keyboard";
-};
+#include "../_biba40_common.dtsi"
 
-/* RIGHT PCB pins — replace with your actual Biba40 right-half pins */
-&kscan0 {
-    compatible = "zmk,kscan-gpio-matrix";
-    label = "BIBA_RIGHT_KSCAN";
-
-    /* Example: old matrix 4 rows × 6 cols */
-    row-gpios = <&gpio0 10 GPIO_ACTIVE_HIGH>,
-                <&gpio0 11 GPIO_ACTIVE_HIGH>,
-                <&gpio0 12 GPIO_ACTIVE_HIGH>,
-                <&gpio0 13 GPIO_ACTIVE_HIGH>;
-
-    col-gpios = <&gpio1 2 GPIO_ACTIVE_HIGH>,
-                <&gpio1 3 GPIO_ACTIVE_HIGH>,
-                <&gpio1 4 GPIO_ACTIVE_HIGH>,
-                <&gpio1 5 GPIO_ACTIVE_HIGH>,
-                <&gpio1 6 GPIO_ACTIVE_HIGH>,
-                <&gpio1 7 GPIO_ACTIVE_HIGH>;
-
-    diode-direction = "col-to-row";
-};
-
-/* Rotate 90° clockwise: new(r,c) -> old(3 - c, r) for old 4×6 */
 &{/} {
-    kscan_transform: kscan_transform {
+    compatible = "zmk,keyboard";
+}
+
+/* RIGHT PCB — your provided col order (note reversed order vs left) */
+&kscan0 {
+    col-gpios = <&pro_micro 21 GPIO_ACTIVE_HIGH>,
+                <&pro_micro 20 GPIO_ACTIVE_HIGH>,
+                <&pro_micro 19 GPIO_ACTIVE_HIGH>,
+                <&pro_micro 18 GPIO_ACTIVE_HIGH>,
+                <&pro_micro 15 GPIO_ACTIVE_HIGH>,
+                <&pro_micro 14 GPIO_ACTIVE_HIGH>;
+}
+
+/* Rotate 90° CW from original 4×6 to a logical 6×4 */
+&{/} {
+    kscan_transform_right: kscan_transform_right {
         compatible = "zmk,kscan-transform";
         label = "BIBA_MACRO_KSCAN_TRANSFORM_RIGHT";
         input = <&kscan0>;
         rows = <6>;
         columns = <4>;
+
+        /* new(r,c) -> old(3 - c, r) for old 4×6 */
         transform = <ZMK_MATRIX_TRANSFORM(
             KSCAN_MATRIX_KEY(3,0), KSCAN_MATRIX_KEY(2,0), KSCAN_MATRIX_KEY(1,0), KSCAN_MATRIX_KEY(0,0),
             KSCAN_MATRIX_KEY(3,1), KSCAN_MATRIX_KEY(2,1), KSCAN_MATRIX_KEY(1,1), KSCAN_MATRIX_KEY(0,1),
@@ -43,4 +36,4 @@
     };
 };
 
-&chosen { zmk,kscan = &kscan_transform; };
+&chosen { zmk,kscan = &kscan_transform_right; };
